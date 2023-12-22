@@ -7,16 +7,19 @@ phases:
     commands:
       - echo "Installing Docker..."
 
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - $(aws ecr get-login --region eu-central-1 --no-include-email)
+
   build:
     commands:
       - echo "Building the Docker image..."
-      - docker build -t coworking .
+      - docker build -t coworking:latest .
+      - docker tag coworking:latest 384232680670.dkr.ecr.eu-central-1.amazonaws.com/coworking:latest
 
   post_build:
     commands:
-      - echo "Tagging the Docker image..."
-      - docker tag coworking:latest 384232680670.dkr.ecr.eu-central-1.amazonaws.com/coworking:latest
       - echo "Pushing the Docker image to AWS ECR..."
       - docker push 384232680670.dkr.ecr.eu-central-1.amazonaws.com/coworking:latest
       - echo "Build completed on `date`"
-
