@@ -17,5 +17,31 @@ spec:
       containers:
       - name: analytics
         image: 384232680670.dkr.ecr.eu-central-1.amazonaws.com/coworking:latest
+        env:
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_NAME
         ports:
         - containerPort: 5153
